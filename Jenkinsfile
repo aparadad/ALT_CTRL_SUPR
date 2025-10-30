@@ -2,21 +2,6 @@
 pipeline {
     agent any 
 
-options {
-        // Establecer el tiempo de espera de la tarea (opcional, pero ayuda)
-        timeout(time: 20, unit: 'MINUTES') 
-        
-        // --- CÓDIGO CORREGIDO ---
-        // Usar la directiva 'systemProperties' para establecer las propiedades de Java (el -D...)
-        systemProperties(
-            [
-                // La clave de la propiedad del sistema y su valor (3600 segundos = 1 hora)
-                [key: 'org.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL', value: '3600'] 
-            ]
-        )
-        // --- FIN CÓDIGO CORREGIDO ---
-    }
-	
     environment {
         // Variables basadas en tu Producto 1 y Dockerfile
         DOCKER_IMAGE = 'mi_aplicacion_go' 
@@ -68,5 +53,6 @@ options {
         }
     }
 }
+
 
 
