@@ -3,15 +3,18 @@ pipeline {
     agent any 
 
 options {
-        // Aumenta el intervalo de chequeo a 1 hora (3600 segundos) para evitar que
-        // Jenkins mate tareas de shell muy rápidas o lentas
-        skipDefaultCheckout true // Opcional, pero recomendado en el entorno de Docker
-        timeout(time: 1, unit: 'HOURS')
-        wrapper {
-            properties {
-                'org.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL' = 3600
-            }
-        }
+        // Establecer el tiempo de espera de la tarea (opcional, pero ayuda)
+        timeout(time: 20, unit: 'MINUTES') 
+        
+        // --- CÓDIGO CORREGIDO ---
+        // Usar la directiva 'systemProperties' para establecer las propiedades de Java (el -D...)
+        systemProperties(
+            [
+                // La clave de la propiedad del sistema y su valor (3600 segundos = 1 hora)
+                [key: 'org.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL', value: '3600'] 
+            ]
+        )
+        // --- FIN CÓDIGO CORREGIDO ---
     }
 	
     environment {
@@ -65,4 +68,5 @@ options {
         }
     }
 }
+
 
