@@ -2,6 +2,18 @@
 pipeline {
     agent any 
 
+options {
+        // Aumenta el intervalo de chequeo a 1 hora (3600 segundos) para evitar que
+        // Jenkins mate tareas de shell muy rápidas o lentas
+        skipDefaultCheckout true // Opcional, pero recomendado en el entorno de Docker
+        timeout(time: 1, unit: 'HOURS')
+        wrapper {
+            properties {
+                'org.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL' = 3600
+            }
+        }
+    }
+	
     environment {
         // Variables basadas en tu Producto 1 y Dockerfile
         DOCKER_IMAGE = 'mi_aplicacion_go' 
@@ -53,3 +65,4 @@ pipeline {
         }
     }
 }
+
